@@ -1,5 +1,4 @@
-
-namespace Tabbakh.API
+﻿namespace Tabbakh.API
 {
     public class Program
     {
@@ -7,27 +6,26 @@ namespace Tabbakh.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // ✅ Add services to the container
             builder.Services.AddControllers();
+
+            // ✅ Swagger Services
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+            // (اختياري)
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
+            // ✅ خلي Swagger شغال دايمًا (مش بس Development)
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
+            // Configure the HTTP request pipeline
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
