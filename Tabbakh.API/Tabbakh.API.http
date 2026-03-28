@@ -1,0 +1,6 @@
+@Tabbakh.API_HostAddress = http://localhost:5207
+
+GET {{Tabbakh.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
