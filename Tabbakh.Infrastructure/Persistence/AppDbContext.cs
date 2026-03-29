@@ -30,6 +30,11 @@ namespace Tabbakh.Infrastructure.Persistence
         public DbSet<CartItem> CartItems { get; set; }
 
         public DbSet<AIRequest> AIRequests { get; set; }
+        public DbSet<RecipeStep> RecipeSteps { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
+        public DbSet<RecipeCategory> RecipeCategories { get; set; }
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -60,6 +65,24 @@ namespace Tabbakh.Infrastructure.Persistence
                 .HasOne(ri => ri.Ingredient)
                 .WithMany(i => i.RecipeIngredients)
                 .HasForeignKey(ri => ri.IngredientId);
+
+            builder.Entity<RecipeStep>()
+               .HasOne(s => s.Recipe)
+               .WithMany(r => r.Steps)
+               .HasForeignKey(s => s.RecipeId);
+
+            builder.Entity<RecipeCategory>()
+                .HasKey(rc => new { rc.RecipeId, rc.CategoryId });
+
+            builder.Entity<RecipeCategory>()
+                .HasOne(rc => rc.Recipe)
+                .WithMany()
+                .HasForeignKey(rc => rc.RecipeId);
+
+            builder.Entity<RecipeCategory>()
+                .HasOne(rc => rc.Category)
+                .WithMany(c => c.RecipeCategories)
+                .HasForeignKey(rc => rc.CategoryId);
         }
     }
 }

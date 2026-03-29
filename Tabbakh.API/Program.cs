@@ -26,6 +26,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
 })
+
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
@@ -54,6 +55,7 @@ builder.Services.AddAuthentication(options =>
 
 // ✅ Controllers
 builder.Services.AddControllers();
+
 
 // ✅ Swagger + JWT Support
 builder.Services.AddEndpointsApiExplorer();
@@ -95,7 +97,16 @@ builder.Services.AddSwaggerGen(options =>
 
 #endregion
 
+
+
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    DbSeeder.Seed(db);
+}
 
 #region Middleware
 
